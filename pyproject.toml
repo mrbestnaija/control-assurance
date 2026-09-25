@@ -1,10 +1,12 @@
 # Packaging for the `control-assurance` distribution ONLY.
 #
-# This repository hosts the portfolio_maximizer trading system. This file does NOT package that system: it
-# packages the single subpackage `control_assurance`, which is the one component intended for distribution.
-# `[tool.setuptools] packages` is therefore an explicit list of one, not auto-discovery -- auto-discovery here
-# would sweep etl/, execution/, risk/, models/ and scripts/ into a wheel and publish the trading system by
-# accident, which is the kind of quiet mistake this repository has paid for repeatedly.
+# This file packages the single package `control_assurance` and nothing else. The comment here previously
+# described the PRIVATE repository this tool was extracted from, which was accurate there and is simply false
+# here -- this repository hosts the tool alone.
+# `[tool.setuptools] packages` is nonetheless an explicit list of one rather than auto-discovery, and stays that
+# way. In the originating repository auto-discovery would have swept its private trading packages into the
+# wheel and published them by accident; keeping the list explicit means this file behaves identically whether
+# it sits beside one package or fifty, so the guard does not quietly depend on which repo it is in.
 #
 # pytest configuration stays in pytest.ini. No [tool.pytest.ini_options] section is added here, because two
 # config sources for one tool is the second-definition defect and pytest would silently prefer this file.
