@@ -31,10 +31,26 @@ more. Behaviour is established only by breaking the thing and watching a named t
 ## Install
 
 ```bash
-pip install control-assurance
+pip install git+https://github.com/mrbestnaija/control-assurance
 ```
 
-Python 3.10+. Requires `pyyaml` and `pytest`.
+Python 3.10+. Requires `pyyaml` and `pytest`. There is **no PyPI release yet**, so
+`pip install control-assurance` will not resolve — use the line above until this note is gone.
+
+Verified on a first run from a clean clone: Ubuntu 22.04 / Python 3.10.12, and Windows / Python 3.12.
+
+**If `control-assurance` is not found after installing,** pip put the console script in a directory that is not
+on your `PATH`. This is the normal outcome of a `--user` install, which pip chooses automatically when
+site-packages is not writable — and it is easy to mistake for a failed install, because the package is in fact
+installed:
+
+```bash
+python -m control_assurance.cli prove --help   # always works, no PATH needed
+~/.local/bin/control-assurance prove --help    # the script pip actually wrote
+export PATH="$HOME/.local/bin:$PATH"           # or put it on PATH
+```
+
+The `python -m` form is the one to use in CI and in scripts, because it does not depend on `PATH` at all.
 
 **Hard limit, stated before you install rather than after:** your falsifiers must be runnable by pytest.
 `run_test` shells `python -m pytest <falsifier>`. A project whose tests run under `unittest` alone, `go test`,
