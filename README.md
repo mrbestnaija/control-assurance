@@ -31,13 +31,21 @@ more. Behaviour is established only by breaking the thing and watching a named t
 ## Install
 
 ```bash
+pip install control-assurance
+```
+
+Python 3.10+. Requires `pyyaml` and `pytest`.
+[On PyPI](https://pypi.org/project/control-assurance/0.1.0/) since 2026-09-25, and verified by installing from
+PyPI into a clean virtualenv rather than by assuming the upload worked.
+
+To track the repo ahead of a release:
+
+```bash
 pip install git+https://github.com/mrbestnaija/control-assurance
 ```
 
-Python 3.10+. Requires `pyyaml` and `pytest`. There is **no PyPI release yet**, so
-`pip install control-assurance` will not resolve — use the line above until this note is gone.
-
-Verified on a first run from a clean clone: Ubuntu 22.04 / Python 3.10.12, and Windows / Python 3.12.
+Both paths verified on a first run from a clean environment: Ubuntu 22.04 / Python 3.10.12, and
+Windows / Python 3.12.
 
 **If `control-assurance` is not found after installing,** pip put the console script in a directory that is not
 on your `PATH`. This is the normal outcome of a `--user` install, which pip chooses automatically when
