@@ -1,0 +1,46 @@
+# Example control register for control-assurance.
+#
+# Two controls, chosen so one run shows both outcomes:
+#   max_position_cap -> PROVED     its falsifier asserts the refusal, so breaking the control fails the test
+#   min_lot_floor    -> NOT_PROVED its falsifier only exercises the happy path and notices nothing
+#
+# Run:  control-assurance prove --registry examples/demo/controls.yml --root examples/demo --all
+
+version: 1
+controls:
+  - name: max_position_cap
+    kind: function
+    target: src.risk_limits.enforce_max_position
+    search_globs: ["src/**/*.py"]
+    min_call_sites: 0
+    status: active
+    asserts: behaviour
+    falsified_by: tests/test_risk_limits.py
+    rationale: >
+      A position above the cap must be refused. The falsifier asserts the refusal itself, not the return
+      value, which is what makes it capable of going red.
+    added_on: "2026-09-22"
+    mutations:
+      - id: cap_check_removed
+        file: src/risk_limits.py
+        anchor: '    if size > cap:'
+        replacement: '    if False:'
+
+  - name: min_lot_floor
+    kind: function
+    target: src.risk_limits.enforce_min_lot
+    search_globs: ["src/**/*.py"]
+    min_call_sites: 0
+    status: active
+    asserts: behaviour
+    falsified_by: tests/test_min_lot.py
+    rationale: >
+      A lot below the floor must be refused. This entry is registered, documented, has a named test, and the
+      test passes -- and it proves nothing, because the test never asks the control to refuse anything. The
+      register looks complete. That is the defect this tool exists to surface.
+    added_on: "2026-09-22"
+    mutations:
+      - id: floor_check_removed
+        file: src/risk_limits.py
+        anchor: '    if size < floor:'
+        replacement: '    if False:'

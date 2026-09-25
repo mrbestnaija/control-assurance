@@ -1,0 +1,44 @@
+# Packaging for the `control-assurance` distribution ONLY.
+#
+# This repository hosts the portfolio_maximizer trading system. This file does NOT package that system: it
+# packages the single subpackage `control_assurance`, which is the one component intended for distribution.
+# `[tool.setuptools] packages` is therefore an explicit list of one, not auto-discovery -- auto-discovery here
+# would sweep etl/, execution/, risk/, models/ and scripts/ into a wheel and publish the trading system by
+# accident, which is the kind of quiet mistake this repository has paid for repeatedly.
+#
+# pytest configuration stays in pytest.ini. No [tool.pytest.ini_options] section is added here, because two
+# config sources for one tool is the second-definition defect and pytest would silently prefer this file.
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "control-assurance"
+version = "0.1.0"
+description = "Prove that a registered safety control can actually fail"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{ name = "Bestman Ezekwu Enock" }]
+keywords = ["mutation-testing", "controls", "audit", "compliance", "verification"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Testing",
+]
+# pyyaml: the registry is YAML, imported lazily in load_registry.
+# pytest: run_test shells `sys.executable -m pytest <falsifier>`. The tool proves falsifiers PYTEST CAN RUN;
+#         a project whose tests run under anything else is out of scope until a runner adapter exists. That
+#         limit is declared in the README rather than discovered after installation.
+dependencies = ["pyyaml>=6.0", "pytest>=7.0"]
+
+[project.scripts]
+control-assurance = "control_assurance.cli:main"
+
+[tool.setuptools]
+packages = ["control_assurance"]

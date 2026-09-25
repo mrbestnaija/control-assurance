@@ -1,0 +1,15 @@
+# Build artifacts
+build/
+dist/
+*.egg-info/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# NOT PUBLISHED, deliberately. PUBLISH.md is the internal deliberation about licensing and monetisation --
+# pricing, what trade-secret protection costs to give up, and the operator's aim of recouping research spend.
+# None of it is a secret, but publishing your own commercial reasoning alongside the thing you are giving away
+# tells every reader exactly what you think it is worth. It stays local.
+PUBLISH.md
